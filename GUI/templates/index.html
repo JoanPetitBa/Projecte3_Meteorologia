@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronóstico del Tiempo</title>
+
+    <style>
+        body {
+            
+            /* SUN */
+            /* background: linear-gradient(180deg, rgba(255,222,89,1) 0%, rgba(255,255,255,1) 100%); */
+
+            /* RAIN */
+            /* background: linear-gradient(180deg, rgba(0,131,181,1) 0%, rgba(213,213,213,1) 100%); */
+
+            /* FOG */
+            /* background: linear-gradient(180deg, rgba(171,171,171,1) 0%, rgba(255,255,255,1) 100%); */
+            
+            /* CLOUD */
+            /* background: linear-gradient(180deg, rgba(50,50,50,1) 0%, rgba(255,255,255,1) 100%); */
+
+            /* STORM */
+            background: linear-gradient(180deg, rgba(0,83,181,1) 0%, rgba(213,213,213,1) 100%);
+
+        }
+    </style>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+
+<body>
+    <!-- CERCADOR DE DATES -->
+    <div class="dates">
+
+        <input type="date" class="date_search" id="date_1" name="date_1">
+        <input type="date" class="date_search" id="date_2" name="date_2">
+        
+        <button type="submit" id="dates_button" name="dates_button">
+            <img src="{{ url_for('static', filename='icons/lupa.png') }}" alt="">
+        </button>
+
+    </div>
+
+    <!-- PREVISIO DEL PRIMER DIA / ACTUAL -->
+    <div class="weather-container">
+            
+        <img id="main_weather" class="weather-icon" src="{{ url_for('static', filename='icons/cloud.png') }}" alt="">
+        
+        <div class="weather-info">
+            <div class="temperature" id="main_avg_temp" name="avg_temp">18°C</div>
+            <div class="min-max">
+                <span class="min-temp" id="main_min_temp" name="min_temp">13°C</span>
+                <span class="max-temp" id="main_temp" name="max_temp">22°C</span>
+            </div>
+        </div>
+
+
+        <!-- RECYCLER VIEW PEL PRONOSTIC DELS PROXIMS DIES -->
+
+        <div class="recycler-view">
+
+            <!-- Elemento del pronóstico -->
+            <button class="weather-item">
+
+                <div class="day">14/01/2025</div>
+
+                <div class="icon">
+                    <img src="{{ url_for('static', filename='icons/sun.png') }}" alt="">
+                </div>
+
+                <div class="temperature-item">
+                    <span class="min-temp-pronostic">18</span> / <span class="max-temp-pronostic">23</span>
+                </div>
+
+            </button>
+
+            <button class="weather-item" onclick="">
+    
+                <div class="day">15/01/2025</div>
+    
+                <div class="icon">
+                    <img src="{{ url_for('static', filename='icons/cloud.png') }}" alt="">
+                </div>
+    
+                <div class="temperature-item">
+                    <span class="min-temp-pronostic">15</span> / <span class="max-temp-pronostic">18</span>
+                </div>
+    
+            </button>
+        </div>
+
+
+    </div>
+
+    <!-- ADDITIONAL DATA -->
+    <div class="additional-data">
+
+        <div class="data">
+
+            <img src="{{ url_for('static', filename='icons/humidity.png') }}" alt="">
+            <span id="humidity" name="humidity">64%</span>
+
+        </div>
+
+        <div class="data">
+
+            <img src="{{ url_for('static', filename='icons/rain_drop.png') }}" alt="">
+            <span id="precipitation" name="precipitation">5 mm</span>
+
+        </div>
+
+        <div class="data">
+
+            <img src="{{ url_for('static', filename='icons/pressure.png') }}" alt="">
+            <span id="pressure" name="pressure">1485 HPa</span>
+
+        </div>
+
+        <div class="data">
+
+            <img src="{{ url_for('static', filename='icons/wind.png') }}" alt="">
+            <span id="wind" name="wind">5 km/h</span>
+
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+
+        <span>Joan Petit Badrinas - Master IABD 2024/25 ®</span>
+
+    </div>
+
+</body>
+</html>
