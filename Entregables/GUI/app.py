@@ -11,10 +11,7 @@ BACKGROUNDS = {'sun':'linear-gradient(180deg, rgba(255,222,89,1) 0%, rgba(255,25
 
 @app.route("/")
 def home():
-
-
-    
-    return render_template("index.html")
+    return render_template("index.html",background=BACKGROUNDS['rain'])
 
 @app.route("/get_data_dates", methods=['POST'])
 def get_data_dates():
