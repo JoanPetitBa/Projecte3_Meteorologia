@@ -3,8 +3,17 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
+BACKGROUNDS = {'sun':'linear-gradient(180deg, rgba(255,222,89,1) 0%, rgba(255,255,255,1) 100%)',
+               'rain':'linear-gradient(180deg, rgba(0,131,181,1) 0%, rgba(213,213,213,1) 100%)',
+               'fog':'linear-gradient(180deg, rgba(171,171,171,1) 0%, rgba(255,255,255,1) 100%)',
+               'cloud':'linear-gradient(180deg, rgba(50,50,50,1) 0%, rgba(255,255,255,1) 100%)',
+               'storm':'linear-gradient(180deg, rgba(0,83,181,1) 0%, rgba(213,213,213,1) 100%)'}
+
 @app.route("/")
 def home():
+
+
+    
     return render_template("index.html")
 
 @app.route("/get_data_dates", methods=['POST'])
