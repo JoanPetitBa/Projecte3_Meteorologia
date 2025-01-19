@@ -11,7 +11,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100px;
+    height: 10vh;
 }
 
 .date_search {
@@ -37,7 +37,7 @@ body {
 }
 
 .dates button img {
-    max-width: 30px;
+    max-width: 10vh;
     max-height: 30px;
 }
 
@@ -85,7 +85,7 @@ body {
 /* PRONOSTIC */
 .recycler-view {
     flex: 1;
-    height: 500px;
+    height: 70vh;
     width:80%;
     padding: 10px;
     margin-right: 40px;
@@ -94,6 +94,8 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    justify-items: center;
+    align-items: center;
 }
 
 .recycler-view::-webkit-scrollbar {
@@ -108,7 +110,6 @@ body {
 .weather-item {
     display: flex;
     align-items: center;
-    justify-content: left;
     padding: 5px 0;
     border-bottom: 1px solid #000000;
     cursor: pointer;
@@ -116,7 +117,8 @@ body {
     border-top: none;
     border-right: none;
     border-left: none;
-    padding-right: 50px;
+    width: 100%;
+    justify-items: center;
 }
 
 .weather-item:hover {
@@ -136,20 +138,20 @@ body {
 .day {
     font-size: 25px;
     font-weight: bold;
-    margin-left: 40px;
     color: #000000;
+    width: 33vh;
 }
 
 .icon img {
     width: 50px;
     height: 50px;
-    margin-left: 40px;
+    
 }
 
 .temperature-item {
     font-size: 20px;
     color: #000000;
-    margin-left: 40px;
+    width: 33vh;
 }
 
 .min-temp-pronostic {
@@ -160,34 +162,10 @@ body {
     color: #ff4d4d;
 }
 
-
-/* ADDITIONAL DATA */
-
-.additional-data {
-    height: 200px;
-    display: flex;
-    align-items: center;
-
-}
-
-.data {
-    font-size: 40px;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.data img {
-    max-width: 15%;
-    max-height: 15%;
-    margin-right: 10px;
-}
-
 /* FOOTER */
 .footer {
     display: flex;
-    height: 100px;
+    height: 17vh;
     justify-content: center;
     align-items: center;
 }
@@ -195,68 +173,30 @@ body {
 
 /* MEDIA QUERIES */
 
-/* Para pantallas de entre 1200px y 1600px */
-@media (max-width: 1600px) and (min-width: 1200px) {
+/* Para pantallas de entre 992px y 1200px (laptops más pequeñas) */
+@media (max-width: 1600px) and (min-width: 1030px) {
 
-    .weather-container {
-        height: 300px;
+    .dates {
+        height: 15vh;
     }
 
-    .min-max {
-        font-size: 30px;
+    .weather-container {
+        height: 70vh;
     }
 
     .recycler-view {
-        height: 300px;
+        height: 30vh;
+        margin-right: 20px;
     }
 
     .weather-icon {
-        margin-left: 100px;
+        margin-left: 30px;
         max-width: 50%;
         max-height: 50%;
     }
 
-    .weather-info {
-        flex: 1.5;
-    }
-
-    .temperature {
-        font-size: 90px;
-    }
-
-    .min-max {
-        font-size: 35px;
-    }
-
-    .additional-data {
-        height: 100px;
-    }
-
-    .data {
-        font-size: 35px;
-    }
-
-    .footer {
-        height: 200px;
-    }
-}
-
-/* Para pantallas de entre 992px y 1200px (laptops más pequeñas) */
-@media (max-width: 1200px) and (min-width: 1030px) {
-
-    .weather-container {
-        height: 300px;
-    }
-
-    .recycler-view {
-        height: 300px;
-        margin-right: 0;
-    }
-
-    .weather-icon {
-        margin-left: 50px;
-        max-width: 70%;
-        max-height: 70%;
+    .day {
+        font-size: 20px;
     }
 
     .weather-info {
@@ -270,14 +210,14 @@ body {
     .min-max {
         font-size: 30px;
     }
-
-    .data {
-        font-size: 30px;
-    }
 }
 
 /* Para pantallas menores a 992px */
 @media (max-width: 1030px) {
+
+    .date_search {
+        width: 30%;
+    }
 
     .weather-container {
         flex-direction: column;
@@ -306,15 +246,13 @@ body {
     }
 
     .recycler-view {
-        width: 100%;
+        width: 70%;
         margin-right: 0;
+        margin-top: 20px;
+        max-height: 40vh;
     }
 
-    .additional-data {
-        height: 100px;
-    }
-
-    .data {
-        font-size: 25px;
+    .footer {
+        height: 30vh;
     }
 }
