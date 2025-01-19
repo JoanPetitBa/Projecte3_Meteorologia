@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from datetime import datetime, timedelta
+from functions  import intermediate_dates, get_weather
 
 app = Flask(__name__)
 
@@ -11,6 +12,15 @@ BACKGROUNDS = {'sun':'linear-gradient(180deg, rgba(255,222,89,1) 0%, rgba(255,25
 
 @app.route("/")
 def home():
+
+    today = datetime.strptime(datetime.now(),"%Y-%m-%d")
+    final_date = datetime.strptime(datetime.now(),"%Y-%m-%d") + timedelta(days=5)
+
+    dates = intermediate_dates(today,final_date)
+
+    predicciones = get_weather(dates)
+
+
     return render_template("index.html",background=BACKGROUNDS['rain'])
 
 @app.route("/get_data_dates", methods=['POST'])
