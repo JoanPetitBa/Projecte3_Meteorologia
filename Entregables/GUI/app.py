@@ -1,27 +1,65 @@
 from flask import Flask, render_template, request
 from datetime import datetime, timedelta
-from functions  import intermediate_dates, get_weather
+from functions  import get_weather
+import random
 
 app = Flask(__name__)
 
-BACKGROUNDS = {'sun':'linear-gradient(180deg, rgba(255,222,89,1) 0%, rgba(255,255,255,1) 100%)',
+BODY_BG = {'sun':'linear-gradient(180deg, rgba(255,222,89,1) 0%, rgba(255,255,255,1) 100%)',
                'rain':'linear-gradient(180deg, rgba(0,131,181,1) 0%, rgba(213,213,213,1) 100%)',
                'fog':'linear-gradient(180deg, rgba(171,171,171,1) 0%, rgba(255,255,255,1) 100%)',
                'cloud':'linear-gradient(180deg, rgba(50,50,50,1) 0%, rgba(255,255,255,1) 100%)',
-               'storm':'linear-gradient(180deg, rgba(0,83,181,1) 0%, rgba(213,213,213,1) 100%)'}
+               'storm':'linear-gradient(180deg, rgba(0,83,181,1) 0%, rgba(213,213,213,1) 100%)'
+}
 
-@app.route("/")
+MAIN_BG = {
+    'sun': '#FFE57F',
+    'rain': '#A1C4E4',
+    'fog': '#D6D6D6',
+    'cloud': '#B0BEC5',
+    'storm': '#90A4AE'
+}
+
+MSG = {
+    'sun': 'Un día soleado y brillante.',
+    'rain': 'Lluvias esperadas, ¡no olvides tu paraguas!',
+    'fog': 'Niebla densa, ten cuidado al conducir.',
+    'cloud': 'Cielo nublado, pero tranquilo.',
+    'storm': 'Tormenta en camino, quédate seguro.'
+}
+
+@app.route("/", methods=["GET", "POST"])
 def home():
 
-    # today = datetime.strptime(datetime.now(),"%Y-%m-%d")
-    # final_date = datetime.strptime(datetime.now(),"%Y-%m-%d") + timedelta(days=5)
+    today = datetime.now().strftime("%Y-%m-%d")
 
-    # dates = intermediate_dates(today,final_date)
+    state,weather = get_weather(
+        date = today,
+        precipitation = random.uniform(0,50),
+        wind = random.uniform(0,10),
+        humidity = random.randint(30,100),
+    )
 
-    # predicciones = get_weather(dates)
+    if state:
+        return render_template(
+            "index.html",
+            body_bg = BODY_BG[weather],
+            main_bg = MAIN_BG[weather],
+            weather_icon = f"{{ url_for('static', filename='icons/{weather}.png') }}",
+            date = today,
+            msg = "TEST: OK"
+        )
+    
+    else:
 
-
-    return render_template("index.html",background=BACKGROUNDS['rain'])
+        return render_template(
+            "index.html",
+            body_bg = BODY_BG['storm'],
+            main_bg = MAIN_BG['storm'],
+            weather_icon = f"{{ url_for('static', filename='icons/storm.png') }}",
+            date = today,
+            msg = F"TEST: {weather}"
+        )
 
 @app.route("/get_data_dates", methods=['POST'])
 def get_data_dates():
