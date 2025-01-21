@@ -5,43 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pronóstico del Tiempo</title>
 
-    <style>
-        body {
-            
-            background: "{{ body_bg }}";
-
-        }
-
-        main {
-            background: "{{ main_bg }}";
-        }
-
-    </style>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 
-<body>
+<body style="background: {{ body_bg }};">
     <div class="container">
 
         <div class="sidebar">
+            <!-- Forma que encapsula los inputs y el botón -->
+            <form method="POST" action="/">
+                <!-- Entradas de datos sin cambios visuales -->
+                <input type="date" id="date" name="date" value="{{ date }}"></input>
+                <input type="number" step="0.01" min="0" id="precipitation" name="precipitation" placeholder="Precipitación"></input>
+                <input type="number" step="0.01" min="0" id="wind" name="wind" placeholder="Viento"></input>
+                <input type="number" id="humidity" name="humidity" placeholder="Humedad"></input>
 
-            <input type="date" id="date" name="date"></input>
-            <input type="number" step="0.1" id="precipitation" name="precipitation" placeholder="Precipitación"></input>
-            <input type="number" step="0.1" id="wind" name="wind" placeholder="Viento"></input>
-            <input type="number" id="humidity" name="humidity" placeholder="Humedad"></input>
-
-            <button type="submit" id="predict_button" name="predict_button">
-                Predecir
-            </button>
+                <!-- Botón de envío de formulario -->
+                <button type="submit" id="predict_button" name="predict_button">
+                    PREDECIR
+                </button>
+            </form>
 
         </div>
 
-        <div class="main">
+        <div class="main" style="background: {{ main_bg }};">
 
             <div class="date" id="date" name="date">{{ date }}</div>
+
+            <div class="data">  
+                <div class="item">
+                    <img src="{{ url_for('static', filename='icons/rain_drop.png') }}" alt="">
+                    <div>{{ precipitation }}</div>
+                </div>
+                <div class="item">
+                    <img src="{{ url_for('static', filename='icons/wind.png') }}" alt="">
+                    <div>{{ wind }}</div>
+                </div>
+                <div class="item">
+                    <img src="{{ url_for('static', filename='icons/humidity.png') }}" alt="">
+                    <div>{{ humidity }}</div>
+                </div>
+            </div>
                 
-            <img id="icon" name="icon" src="{{ weather_icon }}" alt="">
+            <img class="prediction-icon" id="icon" name="icon" src="{{ url_for('static', filename='icons/' + weather_icon) }}" alt="">
 
             <div class="msg" id="msg" name="msg">{{ msg }}</div>
 

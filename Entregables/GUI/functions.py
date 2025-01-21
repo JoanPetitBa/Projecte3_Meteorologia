@@ -32,9 +32,9 @@ def get_weather(date: str, precipitation: float, wind: float, humidity: int, mod
     }
 
     # Validación de entradas
-    if precipitation < 0:
+    if precipitation < 0.0:
         return False, "La precipitación no puede ser negativa."
-    if wind < 0:
+    if wind < 0.0:
         return False, "El viento no puede ser negativo."
     if humidity < 0 or humidity > 100:
         return False, "La humedad debe estar entre 0 y 100."
@@ -54,7 +54,7 @@ def get_weather(date: str, precipitation: float, wind: float, humidity: int, mod
     estacion_id = get_season(month)
 
     # Cargar el modelo correspondiente
-    model_path = fr".\..\Modelos\{model.upper()}_weather_id.pkl"
+    model_path = fr"./Entregables/Modelos/{model.upper()}_weather_id.pkl"
     try:
         if model.upper() == 'RNN':
             loaded_model = tf.keras.models.load_model(model_path)
@@ -70,9 +70,12 @@ def get_weather(date: str, precipitation: float, wind: float, humidity: int, mod
     try:
         
         weather_id = loaded_model.predict(features)
-        weather_str = weather_dict[weather_id]
+
+        weather_id += 1
+
+        weather_str = weather_dict[int(weather_id)]
 
     except Exception as e:
         return False, f"Error al realizar la predicción: {str(e)}"
 
-    return True, weather_id
+    return True, weather_str

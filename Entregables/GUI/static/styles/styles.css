@@ -10,21 +10,23 @@ body {
 
 .container {
     display: flex;
-    background: #fff7cc;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     overflow: hidden;
     width: 150vh;
     height: 75vh;
+    background: rgba(227, 227, 227, 0.423);
 }
 
-.sidebar {
+.sidebar form{
     padding: 20px;
     margin: 20px;
     width: 40vh;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    align-items: center;
+    height: 90%;
 }
 
 .sidebar input {
@@ -38,6 +40,25 @@ body {
     height: 5%;
 }
 
+.sidebar button {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-weight: bold;
+    width: 30%;
+    height: 7%;
+}
+
+.sidebar button:hover {
+    cursor: pointer;
+    background-color: rgb(227, 227, 227);
+}
+
+.sidebar button:active{
+    transform: scale(0.95);
+}
+
 .main {
     flex: 1;
     display: flex;
@@ -45,15 +66,6 @@ body {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    background: linear-gradient(to top, #ffde59, #fff4d1);
-}
-
-.weather-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 20px;
 }
 
 .date {
@@ -61,7 +73,26 @@ body {
     font-weight: bold;
 }
 
-.main img {
+.data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+    font-style: bold;
+}
+
+.item img {
+    max-width: 5vh;
+    max-height: 5vh;
+}
+
+.prediction-icon {
     max-width: 40vh;
     max-height: 40vh;
     margin-top: 5vh;
@@ -71,6 +102,7 @@ body {
 .msg {
     font-size: 1.2rem;
     font-style: italic;
-    color: #333;
+    font-style: bold;
+    color: #000000;
     text-align: center;
 }
