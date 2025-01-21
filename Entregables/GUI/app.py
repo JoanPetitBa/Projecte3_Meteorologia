@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request
-from datetime import datetime, timedelta
-from functions  import get_weather
+from datetime import datetime
+from functions import get_weather
 import random
+import time, os
+from threading import Thread
 
 app = Flask(__name__)
 
@@ -48,27 +50,31 @@ MSG = {
     ]
 }
 
+# Variables para el monitoreo de inactividad
+last_request_time = time.time()
+INACTIVITY_TIMEOUT = 30  # Tiempo de inactividad en segundos (1 minuto)
 
 @app.route("/", methods=["GET", "POST"])
 def home():
 
+    global last_request_time
     today = datetime.now().strftime("%Y-%m-%d")
 
     if request.method == "POST":
+        last_request_time = time.time()  # Actualizamos el tiempo de la última solicitud
         
         precipitation = float(request.form.get('precipitation')) if request.form.get('precipitation') != '' else 0.0
         wind = float(request.form.get('wind')) if request.form.get('wind') != '' else 0.0
         humidity = int(request.form.get('humidity')) if request.form.get('humidity') != '' else 0
         date = request.form.get('date')
 
-        state,weather = get_weather(
-            date = today,
-            precipitation = precipitation,
-            wind = wind,
-            humidity = humidity,
+        state, weather = get_weather(
+            date=today,
+            precipitation=precipitation,
+            wind=wind,
+            humidity=humidity,
         )
 
-        
         return render_template(
             "index.html",
             body_bg=BODY_BG[weather],
@@ -81,17 +87,36 @@ def home():
             msg=random.choice(MSG[weather])
         )
 
+    last_request_time = time.time()  # Actualizamos el tiempo de la última solicitud
+
     return render_template(
         "index.html",
-        body_bg = BODY_BG['sun'],
-        main_bg = MAIN_BG['sun'],
-        weather_icon = f"sun.png",
-        date = today,
+        body_bg=BODY_BG['sun'],
+        main_bg=MAIN_BG['sun'],
+        weather_icon=f"sun.png",
+        date=today,
         precipitation="0.1 mm",
-        wind=f"3.21 m/s",
-        humidity=f"26%",
-        msg = random.choice(MSG['sun'])
+        wind="3.21 m/s",
+        humidity="26%",
+        msg=random.choice(MSG['sun'])
     )
 
+
+def monitor_inactivity():
+    global last_request_time
+    while True:
+        time.sleep(1)
+        if time.time() - last_request_time > INACTIVITY_TIMEOUT:
+            print("No se han registrado nuevas entradas. Cerrando el servidor...")
+            os._exit(0)
+            break
+    
+
 if __name__ == "__main__":
+    # Iniciar el monitoreo de inactividad en un hilo separado
+    inactivity_thread = Thread(target=monitor_inactivity)
+    inactivity_thread.daemon = True  # El hilo se cerrará cuando el servidor termine
+    inactivity_thread.start()
+
+    # Iniciar el servidor Flask
     app.run(debug=True)

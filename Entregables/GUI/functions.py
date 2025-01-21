@@ -1,4 +1,4 @@
-import joblib
+import joblib,os
 from datetime import datetime
 import numpy as np
 
@@ -51,11 +51,11 @@ def get_weather(date: str, precipitation: float, wind: float, humidity: int) -> 
     estacion_id = get_season(month)
 
     # Cargar el modelo correspondiente
-    model_path = fr"./Entregables/Modelos/XGB_weather_id.pkl"
+    model_path = fr".\..\Modelos/XGB_weather_id.pkl"
     try:
         loaded_model = joblib.load(model_path)
     except FileNotFoundError:
-        return False, f"No se pudo encontrar el modelo en la ruta {model_path}."
+        return False, f"No se pudo encontrar el modelo en la ruta {model_path}. PATH ACTUAL: {os.getcwd()}"
 
     # Preparar las características para la predicción
     features = np.array([[year, month, day, precipitation, wind, humidity, estacion_id]])
