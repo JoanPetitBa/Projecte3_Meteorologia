@@ -52,7 +52,7 @@ MSG = {
 
 # Variables para el monitoreo de inactividad
 last_request_time = time.time()
-INACTIVITY_TIMEOUT = 30  # Tiempo de inactividad en segundos (1 minuto)
+INACTIVITY_TIMEOUT = 120  # Tiempo de inactividad en segundos (1 minuto)
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -119,4 +119,4 @@ if __name__ == "__main__":
     inactivity_thread.start()
 
     # Iniciar el servidor Flask
-    app.run(debug=True)
+    app.run()
