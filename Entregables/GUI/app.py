@@ -58,7 +58,7 @@ INACTIVITY_TIMEOUT = 120  # Tiempo de inactividad en segundos (1 minuto)
 def home():
 
     global last_request_time
-    today = datetime.now().strftime("%Y-%m-%d")
+    today = datetime.now().strftime("%d-%m-%Y")
 
     if request.method == "POST":
         last_request_time = time.time()  # Actualizamos el tiempo de la última solicitud
