@@ -58,7 +58,7 @@ INACTIVITY_TIMEOUT = 120  # Tiempo de inactividad en segundos (1 minuto)
 def home():
 
     global last_request_time
-    today = datetime.now().strftime("%d-%m-%Y")
+    today = datetime.now()
 
     if request.method == "POST":
         last_request_time = time.time()  # Actualizamos el tiempo de la última solicitud
@@ -67,9 +67,11 @@ def home():
         wind = float(request.form.get('wind')) if request.form.get('wind') != '' else 0.0
         humidity = int(request.form.get('humidity')) if request.form.get('humidity') != '' else 0
         date = request.form.get('date')
+        if date == '':
+            date = today.strftime("%Y-%m-%d")
 
         state, weather = get_weather(
-            date=today,
+            date=date,
             precipitation=precipitation,
             wind=wind,
             humidity=humidity,
@@ -94,7 +96,7 @@ def home():
         body_bg=BODY_BG['sun'],
         main_bg=MAIN_BG['sun'],
         weather_icon=f"sun.png",
-        date=today,
+        date=today.strftime("%d-%m-%Y"),
         precipitation="0.1 mm",
         wind="3.21 m/s",
         humidity="26%",
