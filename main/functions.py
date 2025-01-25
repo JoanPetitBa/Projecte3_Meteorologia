@@ -51,7 +51,7 @@ def get_weather(date: str, precipitation: float, wind: float, humidity: int) -> 
     estacion_id = get_season(month)
 
     # Cargar el modelo correspondiente
-    model_path = fr".\..\Modelos/XGB_weather_id.pkl"
+    model_path = fr".\main\Modelos\XGB_weather_id.pkl"
     try:
         loaded_model = joblib.load(model_path)
     except FileNotFoundError:
