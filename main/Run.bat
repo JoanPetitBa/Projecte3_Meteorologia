@@ -1,4 +1,15 @@
 @echo off
+
+REM ========= IMPORTAR LAS IBRERIAS =========
+python -m pip install -r requirements.txt || (
+    echo Ocurrió un error al instalar las dependencias.
+    pause
+    exit /b
+)
+
+echo Dependencias instaladas correctamente.
+REM ============================================
+
 rem Obtener la carpeta donde está ubicado el archivo .bat
 cd /d "%~dp0"
 
