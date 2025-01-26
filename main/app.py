@@ -7,6 +7,7 @@ from threading import Thread
 
 app = Flask(__name__)
 
+# DICCIONARIO PARA CAMBIAR EL FONDO EN BASE AL TIEMPO PREDICHO
 BODY_BG = {'sun':'linear-gradient(180deg, rgba(255,222,89,1) 0%, rgba(255,255,255,1) 100%)',
             'rain':'linear-gradient(180deg, rgba(89,185,255,1) 0%, rgba(218,218,218,1) 100%)',
             'fog':'linear-gradient(180deg, rgba(140,140,140,1) 0%, rgba(255,255,255,1) 100%)',
@@ -14,6 +15,7 @@ BODY_BG = {'sun':'linear-gradient(180deg, rgba(255,222,89,1) 0%, rgba(255,255,25
             'storm':'linear-gradient(180deg, rgba(56,96,175,1) 0%, rgba(181,181,181,1) 100%)'
 }
 
+# DICCIONARIO PARA CAMBIAR EL FONDO DEL CONTAINER EN BASE AL TIEMPO PREDICHO
 MAIN_BG = {
     'sun': 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,222,89,1) 100%)',
     'rain': 'linear-gradient(180deg, rgba(218,218,218,1) 0%, rgba(89,185,255,1) 100%)',
@@ -22,6 +24,7 @@ MAIN_BG = {
     'storm': 'linear-gradient(180deg, rgba(181,181,181,1) 0%, rgba(56,96,175,1) 100%)'
 }
 
+# DICCIONARIO DE LOS MENSAJES QUE SE MUESTRAN POR DA TIPO DE TIEMPO
 MSG = {
     'sun': [
         'Hoy es un día soleado y perfecto para salir.',
@@ -46,23 +49,28 @@ MSG = {
     'storm': [
         'Se acerca una tormenta, mejor resguardarse pronto.',
         'Tormenta fuerte en camino, toma precauciones.',
-        'Sca los juegos de mesa, habra tormenta'
+        'Saca los juegos de mesa, habra tormenta'
     ]
 }
 
-# Variables para el monitoreo de inactividad
+# VARIBLES PARA EL TIEMPO DE INACTIVIDAD, TIEMPO DE INACTIVIDAD 2 MINUTOS
 last_request_time = time.time()
-INACTIVITY_TIMEOUT = 120  # Tiempo de inactividad en segundos (1 minuto)
+INACTIVITY_TIMEOUT = 120
 
+# CODIGO PRINCIPAL DE FLASK
 @app.route("/", methods=["GET", "POST"])
 def home():
 
     global last_request_time
     today = datetime.now()
 
+    # SI LA PETICION AL SERVIDOR ES UN POST
     if request.method == "POST":
-        last_request_time = time.time()  # Actualizamos el tiempo de la última solicitud
+
+        # ACTUALIZAR EL TIEMPO DE INACTIVIDAD
+        last_request_time = time.time()
         
+        # OBTENER LOS VALORES ENTRADOS POR EL USUARIO
         precipitation = float(request.form.get('precipitation')) if request.form.get('precipitation') != '' else 0.0
         wind = float(request.form.get('wind')) if request.form.get('wind') != '' else 0.0
         humidity = int(request.form.get('humidity')) if request.form.get('humidity') != '' else 0
@@ -70,6 +78,7 @@ def home():
         if date == '':
             date = today.strftime("%Y-%m-%d")
 
+        # PREDECIR EL TIPO DE CLIMA
         state, weather = get_weather(
             date=date,
             precipitation=precipitation,
@@ -77,6 +86,7 @@ def home():
             humidity=humidity,
         )
 
+        # RECARGAR LA PAGINA PRINCIPAL CON LA NUEVA INFORMACIÓN
         return render_template(
             "index.html",
             body_bg=BODY_BG[weather],
@@ -89,8 +99,13 @@ def home():
             msg=random.choice(MSG[weather])
         )
 
-    last_request_time = time.time()  # Actualizamos el tiempo de la última solicitud
 
+    # SI LA PETICIÓN ES DE TIPO GET
+    
+    # ACTUALIZAR EL TIEMPO DE INACTIVIDAD
+    last_request_time = time.time()
+
+    # CARGAR LA PAGINA CON VALOR DE 'sun' PREDETERMINADO
     return render_template(
         "index.html",
         body_bg=BODY_BG['sun'],
@@ -103,7 +118,7 @@ def home():
         msg=random.choice(MSG['sun'])
     )
 
-
+# FUNCION PARA COMPROVAR SI NO SE HA SUPERADO EL TIEMPO DE INACTIVDAD
 def monitor_inactivity():
     global last_request_time
     while True:
@@ -114,11 +129,15 @@ def monitor_inactivity():
             break
     
 
+############ MAIN ############
 if __name__ == "__main__":
-    # Iniciar el monitoreo de inactividad en un hilo separado
+
+    # INICIAR EL MONITOREO EN UN HILO SEPARADO DE LA ACCION PRINCIPAL
     inactivity_thread = Thread(target=monitor_inactivity)
-    inactivity_thread.daemon = True  # El hilo se cerrará cuando el servidor termine
+
+    # EL HILO SE CERRARÁ CUANDO EL SERVIDOR SE CIERRE
+    inactivity_thread.daemon = True
     inactivity_thread.start()
 
-    # Iniciar el servidor Flask
+    # INICIAR EL SERVIDOR DE FLASK
     app.run()

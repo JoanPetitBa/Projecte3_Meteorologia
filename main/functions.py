@@ -30,37 +30,30 @@ def get_weather(date: str, precipitation: float, wind: float, humidity: int) -> 
         5:'sun',
     }
 
-    # Validación de entradas
-    if precipitation < 0.0:
-        return False, "La precipitación no puede ser negativa."
-    if wind < 0.0:
-        return False, "El viento no puede ser negativo."
-    if humidity < 0 or humidity > 100:
-        return False, "La humedad debe estar entre 0 y 100."
-
     try:
-        # Parsear la fecha
+        # CONVERTIR LA FECHA EN TIPO 'datetime'
         date_obj = datetime.strptime(date, "%Y-%m-%d")
         year = date_obj.year
         month = date_obj.month
         day = date_obj.day
+
     except ValueError:
         return False, "Formato de fecha inválido. Debe ser 'YYYY-MM-DD'."
 
-    # Obtener el identificador de la estación
+    # OBTENER LA ESTACION DE LA FECHA ENTRADA
     estacion_id = get_season(month)
 
-    # Cargar el modelo correspondiente
+    # CARGAR EL MODELO DE XGBOOSTING
     model_path = fr".\main\Modelos\XGB_weather_id.pkl"
     try:
         loaded_model = joblib.load(model_path)
     except FileNotFoundError:
         return False, f"No se pudo encontrar el modelo en la ruta {model_path}. PATH ACTUAL: {os.getcwd()}"
 
-    # Preparar las características para la predicción
+    # FORMAR UNA ARRAY PARA PASAR LOS VALORES PARA LA PREDICCIÓN
     features = np.array([[year, month, day, precipitation, wind, humidity, estacion_id]])
 
-    # Hacer la predicción
+    # PREDECIR EL CLIMA
     try:
         
         weather_id = loaded_model.predict(features)
