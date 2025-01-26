@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 # Uso
 1. ONLINE
-Ingresar a la pagina web [http://weatherprediction.mooo.com](http://weatherprediction.mooo.com)
+Ingresar a la pagina web [http://weatherprediction.mooo.com:8080](http://weatherprediction.mooo.com:8080)
 
 2. OFFLINE
 Para ejecutar el sistema de predicción climática, solo es necesario ejecutar el archivo Run.bat ubicado en la raíz principal del proyecto. Este archivo instalará automáticamente las dependencias necesarias (si aún no están instaladas) y ejecutará el archivo app.py, abriendo automáticamente el navegador con la página correspondiente.
